@@ -287,7 +287,7 @@
 
         // --- Main Logic ---
 
-        render() {
+        render(rawData) {
             const chartBody = this.shadowRoot.getElementById("chartBody");
             const container = this.shadowRoot.getElementById("container");
             const tooltip = this.shadowRoot.getElementById("tooltip");
@@ -301,17 +301,19 @@
 
             // 2. Parse and Validate Data
             let data = [];
-            //try {
-            //    if(this._props.chartData) {
-            //        data = JSON.parse(this._props.chartData);
-            //    }
-            //} catch(e) {
-            //    this._showMessage("Invalid JSON Data");
-            //    return;
-            //}
+            try {
+                if (typeof rawData === "string") {
+                    data = JSON.parse(rawData);
+                } else {
+                    data = rawData;
+                }
+            } catch (e) {
+                chartBody.innerHTML = `<div style="color:red; padding:10px;">Error parsing JSON data</div>`;
+                return;
+            }
 
-            if (!Array.isArray(data) || data.length === 0) {
-                this._showMessage("No Data Available");
+            if (!data || data.length === 0) {
+                chartBody.innerHTML = `<div style="padding:10px; color:#999; font-style:italic">No Data Available.</div>`;
                 return;
             }
 
@@ -387,8 +389,9 @@
         // --- SAC Script Method ---
         setChartData(newData) {
             // Takes a JSON String
-            this.onCustomWidgetBeforeUpdate({ chartData: newData });
-            this.onCustomWidgetAfterUpdate({ chartData: newData });
+            //this.onCustomWidgetBeforeUpdate({ chartData: newData });
+            //this.onCustomWidgetAfterUpdate({ chartData: newData });
+            this.renderChart(newData);
         }
     }
 
