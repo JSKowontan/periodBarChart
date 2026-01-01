@@ -63,8 +63,8 @@
       "description": "Sets the chart data JSON",
       "parameters": [
         {
-          "name": "data",
-          "type": "string",
+          "name": "RecordsArray",
+          "type": "Selection[]",
           "description": "JSON String like [{'year':'2025', 'period':'Q1', 'value':100, 'currency':'USD'}]"
         }
       ]
@@ -76,4 +76,5 @@
     }
   }
 }
+
 
