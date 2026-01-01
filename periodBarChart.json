@@ -2,6 +2,7 @@
   "id": "com.autodeck.period.bar.chart",
   "name": "Period Bar Chart",
   "description": "Period Bar Chart with Label and Color control",
+  "newInstancePrefix": "periodBarChart",
   "version": "1.0.0",
   "vendor": "autodeck.com",
   "eula": "autodeck.com",
@@ -69,4 +70,5 @@
       ]
     }
   }
+
 }
