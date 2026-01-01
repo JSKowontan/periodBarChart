@@ -1,0 +1,72 @@
+{
+  "id": "com.autodeck.period.bar.chart",
+  "name": "Period Bar Chart",
+  "description": "Period Bar Chart with Label and Color control",
+  "version": "1.0.0",
+  "vendor": "autodeck.com",
+  "eula": "autodeck.com",
+  "license": "MIT",
+  "icon": "https://cdn.jsdelivr.net/gh/JSKowontan/periodBarChart@0a5e067b0b2af506b9961317dbeb6905ddd86a92/barChartIcon.png",
+  "imports": [
+    "datasource",
+    "planning-model"
+  ],
+  "webcomponents": [
+    {
+      "kind": "main",
+      "tag": "period-bar-chart",
+      "url": "https://cdn.jsdelivr.net/gh/JSKowontan/periodBarChart@62dbab4a7cc321e4e0d9225eff22a02bc864b325/periodBarChart.js",
+      "integrity": "sha256-8NFzcjdZiRULEqrqBJhZRYLB+rBfN+J1No+GjpJhtHs=",
+      "ignoreIntegrity": false
+    },
+    {
+      "kind": "builder",
+      "tag": "period-bar-chart-builder",
+      "url": "https://cdn.jsdelivr.net/gh/JSKowontan/periodBarChart@62dbab4a7cc321e4e0d9225eff22a02bc864b325/periodBarChart.js",
+      "integrity": "sha256-8NFzcjdZiRULEqrqBJhZRYLB+rBfN+J1No+GjpJhtHs=",
+      "ignoreIntegrity": false
+    }
+  ],
+  "properties": {
+    "chartData": {
+      "type": "string",
+      "description": "JSON Data Array",
+      "default": ""
+    },
+    "measureName": {
+      "type": "string",
+      "description": "Name of measure for tooltip",
+      "default": ""
+    },
+    "barColor": {
+      "type": "string",
+      "description": "Hex color code",
+      "default": "#d3d3d3"
+    },
+    "showLabels": {
+      "type": "boolean",
+      "description": "Show Axis Labels",
+      "default": false
+    },
+    "width": {
+      "type": "integer",
+      "default": 600
+    },
+    "height": {
+      "type": "integer",
+      "default": 300
+    }
+  },
+  "methods": {
+    "setChartData": {
+      "description": "Sets the chart data JSON",
+      "parameters": [
+        {
+          "name": "data",
+          "type": "string",
+          "description": "JSON String like [{'year':'2025', 'period':'Q1', 'value':100, 'currency':'USD'}]"
+        }
+      ]
+    }
+  }
+}
