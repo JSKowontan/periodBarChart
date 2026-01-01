@@ -282,12 +282,12 @@
 
         onCustomWidgetAfterUpdate(changedProperties) {
             // Re-render whenever any property changes
-            this.render();
+            this.renderChart();
         }
 
         // --- Main Logic ---
 
-        render(rawData) {
+        renderChart(rawData) {
             const chartBody = this.shadowRoot.getElementById("chartBody");
             const container = this.shadowRoot.getElementById("container");
             const tooltip = this.shadowRoot.getElementById("tooltip");
