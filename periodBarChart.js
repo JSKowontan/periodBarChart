@@ -301,14 +301,14 @@
 
             // 2. Parse and Validate Data
             let data = [];
-            try {
-                if(this._props.chartData) {
-                    data = JSON.parse(this._props.chartData);
-                }
-            } catch(e) {
-                this._showMessage("Invalid JSON Data");
-                return;
-            }
+            //try {
+            //    if(this._props.chartData) {
+            //        data = JSON.parse(this._props.chartData);
+            //    }
+            //} catch(e) {
+            //    this._showMessage("Invalid JSON Data");
+            //    return;
+            //}
 
             if (!Array.isArray(data) || data.length === 0) {
                 this._showMessage("No Data Available");
