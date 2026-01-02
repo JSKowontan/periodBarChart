@@ -232,7 +232,7 @@
                 height: 100%;
                 justify-content: flex-end;
                 position: relative;
-                cursor: pointer;
+                cursor: default; /* Changed from pointer so empty space isn't clickable */
             }
 
             /* The Bar Itself */
