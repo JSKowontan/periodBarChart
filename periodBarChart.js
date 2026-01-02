@@ -220,7 +220,7 @@
                 flex: 1;
                 width: 100%;
                 gap: 5px;
-                border-bottom: 1px solid #ccc;
+                border-bottom: none;
             }
 
             /* Single Bar Wrapper */
@@ -394,30 +394,36 @@
                     <div class="axis-label">${item.period}<br>${item.year}</div>
                 `;
 
-                // Add Interaction Listeners
-                wrapper.addEventListener("mouseenter", (e) => {
+                // Append wrapper to DOM first so we can querySelector the bar
+                chartBody.appendChild(wrapper);
+
+                // --- CHANGED LOGIC START ---
+                // We now attach the event listeners specifically to the .bar element
+                // inside the wrapper, rather than the wrapper itself.
+                const barElement = wrapper.querySelector('.bar');
+
+                barElement.addEventListener("mouseenter", () => {
                     const measure = this._props.measureName;
                     
                     tooltip.innerHTML = `
-                        <strong style="color:#eee">${measure}</strong><br/>
-                        ${item.year} ${item.period}<br/>
-                        <strong>${val.toLocaleString()} ${item.currency}</strong>
+                        <strong style="color:#eee; font-size:1.1em">${measure}</strong><br/>
+                        <span style="color:#ccc">${item.year} - ${item.period}</span><br/>
+                        <strong style="font-size:1.1em">${val.toLocaleString()} ${item.currency}</strong>
                     `;
                     tooltip.style.opacity = "1";
                 });
 
-                wrapper.addEventListener("mousemove", (e) => {
+                barElement.addEventListener("mousemove", (e) => {
                     const x = e.clientX;
-                    const y = e.clientY - 60; // Shift above cursor
+                    const y = e.clientY;
                     tooltip.style.left = `${x}px`;
                     tooltip.style.top = `${y}px`;
                 });
 
-                wrapper.addEventListener("mouseleave", () => {
+                barElement.addEventListener("mouseleave", () => {
                     tooltip.style.opacity = "0";
                 });
-
-                chartBody.appendChild(wrapper);
+                // --- CHANGED LOGIC END ---
             });
         }
 
