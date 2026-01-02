@@ -7,7 +7,7 @@
   "vendor": "autodeck.com",
   "eula": "autodeck.com",
   "license": "MIT",
-  "icon": "https://cdn.jsdelivr.net/gh/JSKowontan/periodBarChart@main/barChartIcon.png",
+  "icon": "https://cdn.jsdelivr.net/gh/JSKowontan/periodBarChart/barChartIcon.png",
   "imports": [
     "datasource",
     "planning-model"
@@ -16,15 +16,15 @@
     {
       "kind": "main",
       "tag": "period-bar-chart",
-      "url": "https://cdn.jsdelivr.net/gh/JSKowontan/periodBarChart@main/periodBarChart.js",
-      "integrity": "sha256-jMp+XRbXiAgSakM3LQXcot4c9Fk1Z7r1T+/rhlzNFxo=",
+      "url": "https://cdn.jsdelivr.net/gh/JSKowontan/periodBarChart/periodBarChart.js",
+      "integrity": "sha256-/2PiAchEMHJoblOrhaxEsXlNNfCq6aEjUiLZktej7As=",
       "ignoreIntegrity": false
     },
     {
       "kind": "builder",
       "tag": "period-bar-chart-builder",
-      "url": "https://cdn.jsdelivr.net/gh/JSKowontan/periodBarChart@main/periodBarChart.js",
-      "integrity": "sha256-jMp+XRbXiAgSakM3LQXcot4c9Fk1Z7r1T+/rhlzNFxo=",
+      "url": "https://cdn.jsdelivr.net/gh/JSKowontan/periodBarChart/periodBarChart.js",
+      "integrity": "sha256-/2PiAchEMHJoblOrhaxEsXlNNfCq6aEjUiLZktej7As=",
       "ignoreIntegrity": false
     }
   ],
