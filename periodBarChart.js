@@ -210,22 +210,16 @@
                 padding: 10px;
                 box-sizing: border-box;
                 position: relative; /* Anchor for absolute tooltip */
-                overflow: visible;   /* Allows tooltip to appear outside container */
+                overflow: hidden;   /* Keeps content inside */
             }
-
-            /* Bars Area */
             .chart-body {
                 display: flex;
                 align-items: flex-end;
-                justify-content: space-around; /* Distribute evenly */
+                justify-content: space-around; 
                 flex: 1;
                 width: 100%;
-                gap: 5px;
-                border-bottom: none;
-                overflow: visible;   /* Allows tooltip to appear outside container */
+                gap: 2px;
             }
-
-            /* Single Bar Wrapper */
             .bar-wrapper {
                 flex: 1;
                 display: flex;
@@ -234,12 +228,7 @@
                 height: 100%;
                 justify-content: flex-end;
                 position: relative;
-                cursor: default; /* Changed from pointer so empty space isn't clickable */
             }
-
-            /* --- W3Schools CSS Tooltip Implementation --- */
-            
-            /* The Bar (Tooltip Container) */
             .bar {
                 width: var(--bar-width, 20%);
                 min-height: 1px;
@@ -247,57 +236,47 @@
                 transition: height 0.5s ease, opacity 0.2s;
                 border-radius: 2px 2px 0 0;
                 cursor: pointer;
-                position: relative; /* Needed for absolute positioning of tooltip */
-                z-index: 1;  /* Ensures tooltip sits ON TOP of all bars */
             }
-            .bar:hover 
+            .bar:hover {
                 opacity: 0.8;
             }
 
-            /* Tooltip Text (Hidden by default) */
-            .bar .tooltiptext {
-                visibility: hidden;
-                width: 140px; /* Adjusted for content */
-                background-color: black;
+            /* --- Shared Tooltip Styling --- */
+            #tooltip {
+                position: absolute; /* Relative to .container */
+                top: 0; left: 0;
+                background-color: rgba(0, 0, 0, 0.9);
                 color: #fff;
-                text-align: center;
-                border-radius: 6px;
-                padding: 8px;
+                padding: 8px 12px;
+                border-radius: 4px;
                 font-size: 11px;
                 line-height: 1.4;
-                
-                /* Position the tooltip text (Right Side) */
-                position: absolute;
-                z-index: 1000;  /* Ensures it sits ON TOP of all bars */
-                top: 50%;
-                left: 105%; /* Position to the right of the bar */
-                transform: translateY(-50%); /* Center vertically */
-                
-                /* Fade in effect */
+                pointer-events: none; /* Allows mouse to pass through */
                 opacity: 0;
-                transition: opacity 0.3s;
-                pointer-events: none; /* Prevents flickering */
+                transition: opacity 0.2s;
+                z-index: 100; /* Ensures it sits ON TOP of all bars */
+                white-space: nowrap;
+                box-shadow: 0 4px 8px rgba(0,0,0,0.2);
             }
-
-            /* Show the tooltip text when you mouse over the bar */
-            .bar:hover .tooltiptext {
-                visibility: visible;
-                opacity: 1;
-            }
-
-            /* Tooltip Arrow (Left Arrow) */
-            .bar .tooltiptext::after {
-                content: "";
+            
+            /* Arrow for the tooltip */
+            #tooltip::after {
+                content: " ";
                 position: absolute;
-                top: 50%;
-                right: 100%; /* To the left of the tooltip */
-                margin-top: -5px;
+                top: 100%; /* At the bottom of the tooltip */
+                left: 50%;
+                margin-left: -5px;
                 border-width: 5px;
                 border-style: solid;
-                border-color: transparent black transparent transparent;
+                border-color: rgba(0, 0, 0, 0.9) transparent transparent transparent;
+            }
+            /* Class to flip arrow if tooltip is below bar */
+            #tooltip.flipped::after {
+                top: auto;
+                bottom: 100%; /* At the top */
+                border-color: transparent transparent rgba(0, 0, 0, 0.9) transparent;
             }
 
-            /* Axis Labels */
             .axis-label {
                 font-size: 11px;
                 color: #555;
@@ -325,6 +304,7 @@
         
         <div class="container" id="container">
             <div class="chart-body" id="chartBody"></div>
+            <!-- Tooltip is a sibling of chart-body, so it can float over everything -->
             <div id="tooltip"></div>
         </div>
     `;
@@ -337,7 +317,7 @@
             
             // Initial Properties
             this._props = {
-                measureName: "Revenue",
+                measureName: "",
                 barColor: "#d3d3d3", // Default Light Gray
                 barWidth: 20,       // Default slimmer width (Sparkline style)
                 showLabels: false,   // Default Off
@@ -418,24 +398,78 @@
 
                 const wrapper = document.createElement("div");
                 wrapper.className = "bar-wrapper";
-
-                // We inject the Tooltip Span DIRECTLY inside the .bar div
-                // This allows the CSS :hover selector to work naturally
                 wrapper.innerHTML = `
-                    <div class="bar" style="height: ${heightPct}%">
-                        <span class="tooltiptext">
-                            <strong style="font-size:1.1em; color:#eee">${measure}</strong><br>
-                            ${item.year} - ${item.period}<br>
-                            <strong style="font-size:1.1em">${val.toLocaleString()} ${item.currency}</strong>
-                        </span>
-                    </div>
+                    <div class="bar" style="height: ${heightPct}%"></div>
                     <div class="axis-label">${item.period}<br>${item.year}</div>
                 `;
                 
                 chartBody.appendChild(wrapper);
+
+                // --- TOOLTIP LOGIC ---
+                const barElement = wrapper.querySelector('.bar');
+
+                barElement.addEventListener("mouseenter", () => {
+                    tooltip.innerHTML = `
+                        <strong style="font-size:1.1em; color:#eee">${measure}</strong><br>
+                        ${item.year} - ${item.period}<br>
+                        <strong style="font-size:1.1em">${val.toLocaleString()} ${item.currency}</strong>
+                    `;
+                    
+                    // First display it invisibly to calculate dimensions
+                    tooltip.style.opacity = "0";
+                    tooltip.style.display = "block";
+                    
+                    this._updateTooltipPosition(barElement, tooltip, container);
+                    
+                    tooltip.style.opacity = "1";
+                });
                 
-                // No JavaScript Event Listeners needed for Tooltip anymore!
+                // Recalculate on mouse leave/enter to ensure stability
+                barElement.addEventListener("mouseleave", () => {
+                    tooltip.style.opacity = "0";
+                });
             });
+        }
+
+        // --- NEW: Smart Positioning Logic ---
+        _updateTooltipPosition(bar, tooltip, container) {
+            // Get dimensions relative to viewport
+            const barRect = bar.getBoundingClientRect();
+            const containerRect = container.getBoundingClientRect();
+            const tooltipRect = tooltip.getBoundingClientRect();
+
+            // Calculate initial position (Centered above bar)
+            // Relative X = (Bar Left - Container Left) + (Half Bar Width) - (Half Tooltip Width)
+            let relativeLeft = (barRect.left - containerRect.left) + (barRect.width / 2) - (tooltipRect.width / 2);
+            
+            // Relative Y = (Bar Top - Container Top) - Tooltip Height - 10px Gap
+            let relativeTop = (barRect.top - containerRect.top) - tooltipRect.height - 10;
+
+            // --- BOUNDARY CHECKS (Keep inside container) ---
+
+            // 1. Check Left Edge
+            if (relativeLeft < 0) {
+                relativeLeft = 5; // Padding from left wall
+            }
+
+            // 2. Check Right Edge
+            if (relativeLeft + tooltipRect.width > containerRect.width) {
+                relativeLeft = containerRect.width - tooltipRect.width - 5; // Padding from right wall
+            }
+
+            // 3. Check Top Edge (If not enough space above, flip to below)
+            const isFlipped = relativeTop < 0;
+            if (isFlipped) {
+                // Position below the bar
+                relativeTop = (barRect.bottom - containerRect.top) + 10;
+                tooltip.classList.add('flipped');
+            } else {
+                tooltip.classList.remove('flipped');
+            }
+
+            // Apply calculated positions
+            tooltip.style.left = relativeLeft + "px";
+            tooltip.style.top = relativeTop + "px";
         }
 
         _showMessage(text) {
