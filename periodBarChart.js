@@ -264,7 +264,6 @@
                 font-size: 11px;
                 line-height: 1.4;
                 overflow: visible;   /* Allows tooltip to appear outside container */
-                z-index: 1000;      /* Ensures it sits ON TOP of all bars */
 
                 /* Position the tooltip text (Right Side) */
                 position: absolute;
