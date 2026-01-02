@@ -54,6 +54,22 @@
                 border-radius: 4px;
                 cursor: pointer;
             }
+
+            /* Range Slider */
+            .slider-container {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+            input[type="range"] {
+                flex: 1;
+            }
+            .slider-value {
+                font-size: 12px;
+                color: #555;
+                min-width: 35px;
+                text-align: right;
+            }
             
             /* Toggle Switch */
             .toggle-container {
@@ -81,7 +97,17 @@
                 <div class="hint">Default is Light Gray.</div>
             </div>
 
-            <!-- 3. Axis Labels -->
+            <!-- 3. Bar Width Slider -->
+            <div class="form-group">
+                <label for="barWidth">Bar Width</label>
+                <div class="slider-container">
+                    <input type="range" id="barWidth" min="1" max="90" value="20">
+                    <span class="slider-value" id="barWidthVal">20%</span>
+                </div>
+                <div class="hint">Adjust thickness (Sparkline vs Bar Chart).</div>
+            </div>
+
+            <!-- 4. Axis Labels -->
             <div class="form-group">
                 <div class="toggle-container">
                     <input type="checkbox" id="showLabels">
@@ -104,22 +130,29 @@
         connectedCallback() {
             const form = this.shadowRoot.getElementById("form");
             
-            // Listen for changes on all inputs to update widget immediately
+            // Listen to inputs
             const inputs = form.querySelectorAll("input");
             inputs.forEach(input => {
                 input.addEventListener("change", this._submit.bind(this));
-                input.addEventListener("input", this._submit.bind(this)); // For text/color real-time
+                input.addEventListener("input", (e) => {
+                    // Update slider text immediately for feedback
+                    if(e.target.id === 'barWidth') {
+                        this.shadowRoot.getElementById('barWidthVal').innerText = e.target.value + '%';
+                    }
+                    this._submit(e);
+                });
             });
         }
 
         _submit(e) {
-            if(e) e.preventDefault();
+            if(e && e.preventDefault) e.preventDefault();
             
             this.dispatchEvent(new CustomEvent("propertiesChanged", {
                 detail: {
                     properties: {
                         measureName: this.measureName,
                         barColor: this.barColor,
+                        barWidth: this.barWidth,
                         showLabels: this.showLabels
                     }
                 }
@@ -140,6 +173,12 @@
         }
         set barColor(val) {
             this.shadowRoot.getElementById("barColor").value = val;
+        }
+
+        get barWidth() { return parseInt(this.shadowRoot.getElementById("barWidth").value); }
+        set barWidth(val) { 
+            this.shadowRoot.getElementById("barWidth").value = val; 
+            this.shadowRoot.getElementById("barWidthVal").innerText = val + '%';
         }
 
         get showLabels() {
@@ -196,11 +235,12 @@
                 cursor: pointer;
             }
 
+            /* The Bar Itself */
             .bar {
-                width: 60%;
+                width: var(--bar-width, 20%); /* Dynamic Width */
                 min-height: 1px;
-                background-color: var(--bar-color, #d3d3d3);
-                transition: height 0.5s ease, opacity 0.2s;
+                background-color: var(--bar-color, #aaaaaa);
+                transition: height 0.5s ease, opacity 0.2s, width 0.2s;
                 border-radius: 2px 2px 0 0;
             }
             .bar:hover {
@@ -226,19 +266,20 @@
 
             /* Tooltip */
             #tooltip {
-                position: fixed;
+                position: fixed; /* Fixed relative to viewport */
                 background: rgba(30, 30, 30, 0.95);
                 color: white;
                 padding: 8px 12px;
                 border-radius: 4px;
                 font-size: 12px;
-                pointer-events: none;
+                pointer-events: none; /* Crucial: allows mouse to pass through to chart */
                 opacity: 0;
-                transition: opacity 0.2s;
+                transition: opacity 0.1s; /* Faster transition for responsiveness */
                 z-index: 9999;
                 white-space: nowrap;
-                box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+                box-shadow: 0 4px 12px rgba(0,0,0,0.3);
                 line-height: 1.4;
+                transform: translate(15px, 15px); /* Default offset via CSS */
             }
 
             /* Messages */
@@ -269,6 +310,7 @@
             this._props = {
                 measureName: "Revenue",
                 barColor: "#d3d3d3", // Default Light Gray
+                barWidth: 20,       // Default slimmer width (Sparkline style)
                 showLabels: false,   // Default Off
                 chartData: ""        // Raw JSON string
             };
@@ -337,6 +379,7 @@
             // 5. Apply Styling
             container.classList.toggle("show-labels", this._props.showLabels);
             container.style.setProperty('--bar-color', this._props.barColor);
+            container.style.setProperty('--bar-width', this._props.barWidth + "%");
 
             // 6. Generate DOM
             data.forEach(item => {
