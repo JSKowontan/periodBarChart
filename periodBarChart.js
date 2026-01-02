@@ -267,7 +267,7 @@
 
             /* Tooltip */
             #tooltip {
-                position: fixed; /* Fixed relative to viewport */
+                position: relative; /* Fixed relative to viewport */
                 background: rgba(30, 30, 30, 0.95);
                 color: white;
                 padding: 8px 12px;
