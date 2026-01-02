@@ -211,6 +211,12 @@
                 box-sizing: border-box;
                 position: relative; /* Anchor for absolute tooltip */
                 overflow: hidden;   /* Keeps content inside */
+                 /* 
+                   RESERVED SPACE FOR TOOLTIP:
+                   We add 70px padding to the top. This ensures that even if a bar is
+                   at 100% height, there is empty space above it for the tooltip.
+                */
+                padding: 70px 10px 10px 10px; 
             }
             .chart-body {
                 display: flex;
@@ -241,7 +247,7 @@
                 opacity: 0.8;
             }
 
-            /* --- Shared Tooltip Styling --- */
+            /* Tooltip Styling */
             #tooltip {
                 position: absolute; /* Relative to .container */
                 top: 0; left: 0;
@@ -257,24 +263,6 @@
                 z-index: 100; /* Ensures it sits ON TOP of all bars */
                 white-space: nowrap;
                 box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            }
-            
-            /* Arrow for the tooltip */
-            #tooltip::after {
-                content: " ";
-                position: absolute;
-                top: 100%; /* At the bottom of the tooltip */
-                left: 50%;
-                margin-left: -5px;
-                border-width: 5px;
-                border-style: solid;
-                border-color: rgba(0, 0, 0, 0.9) transparent transparent transparent;
-            }
-            /* Class to flip arrow if tooltip is below bar */
-            #tooltip.flipped::after {
-                top: auto;
-                bottom: 100%; /* At the top */
-                border-color: transparent transparent rgba(0, 0, 0, 0.9) transparent;
             }
 
             .axis-label {
@@ -431,46 +419,32 @@
             });
         }
 
-        // --- NEW: Smart Positioning Logic ---
+        // --- Smart Positioning Logic ---
         _updateTooltipPosition(bar, tooltip, container) {
-            // Get dimensions relative to viewport
             const barRect = bar.getBoundingClientRect();
             const containerRect = container.getBoundingClientRect();
             const tooltipRect = tooltip.getBoundingClientRect();
 
-            // Calculate initial position (Centered above bar)
-            // Relative X = (Bar Left - Container Left) + (Half Bar Width) - (Half Tooltip Width)
+            // 1. Calculate Horizontal Center (relative to container)
             let relativeLeft = (barRect.left - containerRect.left) + (barRect.width / 2) - (tooltipRect.width / 2);
             
-            // Relative Y = (Bar Top - Container Top) - Tooltip Height - 10px Gap
+            // 2. Calculate Vertical Top (Always above bar)
+            // relativeTop = Top of Bar (rel to container) - Tooltip Height - Gap
             let relativeTop = (barRect.top - containerRect.top) - tooltipRect.height - 10;
-
-            // --- BOUNDARY CHECKS (Keep inside container) ---
-
-            // 1. Check Left Edge
+            
+            // 3. Horizontal Clamping (Prevent falling off edges)
             if (relativeLeft < 0) {
-                relativeLeft = 5; // Padding from left wall
+                relativeLeft = 5; 
             }
-
-            // 2. Check Right Edge
             if (relativeLeft + tooltipRect.width > containerRect.width) {
-                relativeLeft = containerRect.width - tooltipRect.width - 5; // Padding from right wall
+                relativeLeft = containerRect.width - tooltipRect.width - 5;
             }
 
-            // 3. Check Top Edge (If not enough space above, flip to below)
-            const isFlipped = relativeTop < 0;
-            if (isFlipped) {
-                // Position below the bar
-                relativeTop = (barRect.bottom - containerRect.top) + 10;
-                tooltip.classList.add('flipped');
-            } else {
-                tooltip.classList.remove('flipped');
-            }
-
-            // Apply calculated positions
+            // Apply positions
             tooltip.style.left = relativeLeft + "px";
             tooltip.style.top = relativeTop + "px";
         }
+
 
         _showMessage(text) {
             const container = this.shadowRoot.getElementById("container");
