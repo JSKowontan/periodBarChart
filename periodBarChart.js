@@ -222,6 +222,7 @@
                 width: 100%;
                 gap: 5px;
                 border-bottom: none;
+                overflow: visible;   /* Allows tooltip to appear outside container */
             }
 
             /* Single Bar Wrapper */
@@ -247,8 +248,9 @@
                 border-radius: 2px 2px 0 0;
                 cursor: pointer;
                 position: relative; /* Needed for absolute positioning of tooltip */
+                z-index: 1;  /* Ensures tooltip sits ON TOP of all bars */
             }
-            .bar:hover {
+            .bar:hover 
                 opacity: 0.8;
             }
 
@@ -266,7 +268,7 @@
                 
                 /* Position the tooltip text (Right Side) */
                 position: absolute;
-                z-index: 1;  /* Ensures it sits ON TOP of all bars */
+                z-index: 1000;  /* Ensures it sits ON TOP of all bars */
                 top: 50%;
                 left: 105%; /* Position to the right of the bar */
                 transform: translateY(-50%); /* Center vertically */
