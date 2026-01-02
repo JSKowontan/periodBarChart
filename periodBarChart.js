@@ -219,7 +219,7 @@
                 justify-content: space-around; /* Distribute evenly */
                 flex: 1;
                 width: 100%;
-                gap: 5px;
+                gap: 2px;
                 border-bottom: none;
             }
 
@@ -333,7 +333,7 @@
             
             // Initial Properties
             this._props = {
-                measureName: "Revenue",
+                measureName: "",
                 barColor: "#d3d3d3", // Default Light Gray
                 barWidth: 20,       // Default slimmer width (Sparkline style)
                 showLabels: false,   // Default Off
@@ -357,7 +357,6 @@
         renderChart(rawData) {
             const chartBody = this.shadowRoot.getElementById("chartBody");
             const container = this.shadowRoot.getElementById("container");
-            const tooltip = this.shadowRoot.getElementById("tooltip");
 
             // 1. Clear previous content
             chartBody.innerHTML = "";
@@ -419,11 +418,7 @@
                 // This allows the CSS :hover selector to work naturally
                 wrapper.innerHTML = `
                     <div class="bar" style="height: ${heightPct}%">
-                        <span class="tooltiptext">
-                            <strong style="font-size:1.1em; color:#eee">${measure}</strong><br>
-                            ${item.year} - ${item.period}<br>
-                            <strong style="font-size:1.1em">${val.toLocaleString()} ${item.currency}</strong>
-                        </span>
+                        
                     </div>
                     <div class="axis-label">${item.period}<br>${item.year}</div>
                 `;
