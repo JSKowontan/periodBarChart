@@ -7,7 +7,7 @@
   "vendor": "autodeck.com",
   "eula": "autodeck.com",
   "license": "MIT",
-  "icon": "https://cdn.jsdelivr.net/gh/JSKowontan/periodBarChart@3482e7eb61380696ca39ef8a315331bd5bc424dc/barChartIcon.png",
+  "icon": "https://cdn.jsdelivr.net/gh/JSKowontan/periodBarChart@main/barChartIcon.png",
   "imports": [
     "datasource",
     "planning-model"
@@ -16,15 +16,15 @@
     {
       "kind": "main",
       "tag": "period-bar-chart",
-      "url": "https://cdn.jsdelivr.net/gh/JSKowontan/periodBarChart@ef8dd7165312bc4771d95680760bf4476d28c701/periodBarChart.js",
-      "integrity": "sha256-fd9z3D1EM4mrRsrzFKZaKseCtBzpHxBqOBJ+tKA4Mnc=",
+      "url": "https://cdn.jsdelivr.net/gh/JSKowontan/periodBarChart@main/periodBarChart.js",
+      "integrity": "sha256-jMp+XRbXiAgSakM3LQXcot4c9Fk1Z7r1T+/rhlzNFxo=",
       "ignoreIntegrity": false
     },
     {
       "kind": "builder",
       "tag": "period-bar-chart-builder",
-      "url": "https://cdn.jsdelivr.net/gh/JSKowontan/periodBarChart@ef8dd7165312bc4771d95680760bf4476d28c701/periodBarChart.js",
-      "integrity": "sha256-fd9z3D1EM4mrRsrzFKZaKseCtBzpHxBqOBJ+tKA4Mnc=",
+      "url": "https://cdn.jsdelivr.net/gh/JSKowontan/periodBarChart@main/periodBarChart.js",
+      "integrity": "sha256-jMp+XRbXiAgSakM3LQXcot4c9Fk1Z7r1T+/rhlzNFxo=",
       "ignoreIntegrity": false
     }
   ],
@@ -43,6 +43,11 @@
       "type": "string",
       "description": "Hex color code",
       "default": "#d3d3d3"
+    },
+    "barWidth": {
+      "type": "integer",
+      "description": "Width percentage (1-100)",
+      "default": 20
     },
     "showLabels": {
       "type": "boolean",
@@ -65,7 +70,7 @@
         {
           "name": "RecordsArray",
           "type": "Selection[]",
-          "description": "JSON String like [{'year':'2025', 'period':'Q1', 'value':100, 'currency':'USD'}]"
+          "description": "JSON String like [{'year':'2025', 'period':'Q1', 'value': '100', 'currency':'USD'}]"
         }
       ]
     }
