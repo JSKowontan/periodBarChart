@@ -242,6 +242,7 @@
                 background-color: var(--bar-color, #aaaaaa);
                 transition: height 0.5s ease, opacity 0.2s, width 0.2s;
                 border-radius: 2px 2px 0 0;
+                cursor: pointer; /* Only the bar triggers the pointer */
             }
             .bar:hover {
                 opacity: 0.7;
