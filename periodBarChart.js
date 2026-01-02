@@ -280,7 +280,7 @@
                 white-space: nowrap;
                 box-shadow: 0 4px 12px rgba(0,0,0,0.3);
                 line-height: 1.4;
-                transform: translate(15px, 15px); /* Default offset via CSS */
+                transform: translate(0px, 0px); /* Default offset via CSS */
             }
 
             /* Messages */
