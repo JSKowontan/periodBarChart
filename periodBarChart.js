@@ -418,7 +418,11 @@
                 // This allows the CSS :hover selector to work naturally
                 wrapper.innerHTML = `
                     <div class="bar" style="height: ${heightPct}%">
-                        
+                        <span class="tooltiptext">
+                            <strong style="font-size:1.1em; color:#eee">${measure}</strong><br>
+                            ${item.year} - ${item.period}<br>
+                            <strong style="font-size:1.1em">${val.toLocaleString()} ${item.currency}</strong>
+                        </span>
                     </div>
                     <div class="axis-label">${item.period}<br>${item.year}</div>
                 `;
