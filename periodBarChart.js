@@ -280,7 +280,7 @@
                 white-space: nowrap;
                 box-shadow: 0 4px 12px rgba(0,0,0,0.3);
                 line-height: 1.4;
-                transform: translate(0px, 0px); /* Default offset via CSS */
+                transform: translate(15px, 15px); /* Default offset via CSS */
             }
 
             /* Messages */
@@ -416,7 +416,7 @@
 
                 barElement.addEventListener("mousemove", (e) => {
                     const x = e.clientX;
-                    const y = e.clientY;
+                    const y = e.clientY - 45; // Slightly above cursor
                     tooltip.style.left = `${x}px`;
                     tooltip.style.top = `${y}px`;
                 });
