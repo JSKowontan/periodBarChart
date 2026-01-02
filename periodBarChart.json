@@ -16,15 +16,15 @@
     {
       "kind": "main",
       "tag": "period-bar-chart",
-      "url": "https://cdn.jsdelivr.net/gh/JSKowontan/periodBarChart/periodBarChart.js",
-      "integrity": "sha256-/2PiAchEMHJoblOrhaxEsXlNNfCq6aEjUiLZktej7As=",
+      "url": "https://cdn.jsdelivr.net/gh/JSKowontan/periodBarChart@eb631a2b76e95f2b5367636d74533a93a830cf3b/periodBarChart.js",
+      "integrity": "sha256-BOjXt6lQmebHB73b11hp99GqLUxhV2/AUTyRxMy/zU0=",
       "ignoreIntegrity": false
     },
     {
       "kind": "builder",
       "tag": "period-bar-chart-builder",
-      "url": "https://cdn.jsdelivr.net/gh/JSKowontan/periodBarChart/periodBarChart.js",
-      "integrity": "sha256-/2PiAchEMHJoblOrhaxEsXlNNfCq6aEjUiLZktej7As=",
+      "url": "https://cdn.jsdelivr.net/gh/JSKowontan/periodBarChart@eb631a2b76e95f2b5367636d74533a93a830cf3b/periodBarChart.js",
+      "integrity": "sha256-BOjXt6lQmebHB73b11hp99GqLUxhV2/AUTyRxMy/zU0=",
       "ignoreIntegrity": false
     }
   ],
