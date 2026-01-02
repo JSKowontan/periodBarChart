@@ -209,7 +209,8 @@
                 width: 100%;
                 padding: 10px;
                 box-sizing: border-box;
-                position: relative;
+                position: relative; /* Anchor for absolute tooltip */
+                overflow: visible;   /* Keeps content inside */
             }
 
             /* Bars Area */
@@ -265,7 +266,7 @@
                 
                 /* Position the tooltip text (Right Side) */
                 position: absolute;
-                z-index: 9999;
+                z-index: 1;  /* Ensures it sits ON TOP of all bars */
                 top: 50%;
                 left: 105%; /* Position to the right of the bar */
                 transform: translateY(-50%); /* Center vertically */
