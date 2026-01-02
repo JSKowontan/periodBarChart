@@ -355,8 +355,9 @@
         // --- Main Logic ---
 
         renderChart(rawData) {
-            const chartBody = this.shadowRoot.getElementById("chartBody");
             const container = this.shadowRoot.getElementById("container");
+            const chartBody = this.shadowRoot.getElementById("chartBody");
+            const chartBar = this.shadowRoot.getElementById("bar");
 
             // 1. Clear previous content
             chartBody.innerHTML = "";
@@ -416,7 +417,7 @@
 
                 // We inject the Tooltip Span DIRECTLY inside the .bar div
                 // This allows the CSS :hover selector to work naturally
-                wrapper.innerHTML = `
+                chartBar.innerHTML = `
                     <div class="bar" style="height: ${heightPct}%">
                         <span class="tooltiptext">
                             <strong style="font-size:1.1em; color:#eee">${measure}</strong><br>
