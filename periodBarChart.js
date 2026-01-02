@@ -235,27 +235,72 @@
                 cursor: default; /* Changed from pointer so empty space isn't clickable */
             }
 
-            /* The Bar Itself */
+            /* --- W3Schools CSS Tooltip Implementation --- */
+            
+            /* The Bar (Tooltip Container) */
             .bar {
-                width: var(--bar-width, 20%); /* Dynamic Width */
+                width: var(--bar-width, 20%);
                 min-height: 1px;
                 background-color: var(--bar-color, #aaaaaa);
-                transition: height 0.5s ease, opacity 0.2s, width 0.2s;
+                transition: height 0.5s ease, opacity 0.2s;
                 border-radius: 2px 2px 0 0;
-                cursor: pointer; /* Only the bar triggers the pointer */
+                cursor: pointer;
+                position: relative; /* Needed for absolute positioning of tooltip */
             }
             .bar:hover {
-                opacity: 0.7;
-                filter: brightness(0.9);
+                opacity: 0.8;
             }
 
-            /* Labels */
+            /* Tooltip Text (Hidden by default) */
+            .bar .tooltiptext {
+                visibility: hidden;
+                width: 140px; /* Adjusted for content */
+                background-color: black;
+                color: #fff;
+                text-align: center;
+                border-radius: 6px;
+                padding: 8px;
+                font-size: 11px;
+                line-height: 1.4;
+                
+                /* Position the tooltip text (Right Side) */
+                position: absolute;
+                z-index: 9999;
+                top: 50%;
+                left: 105%; /* Position to the right of the bar */
+                transform: translateY(-50%); /* Center vertically */
+                
+                /* Fade in effect */
+                opacity: 0;
+                transition: opacity 0.3s;
+                pointer-events: none; /* Prevents flickering */
+            }
+
+            /* Show the tooltip text when you mouse over the bar */
+            .bar:hover .tooltiptext {
+                visibility: visible;
+                opacity: 1;
+            }
+
+            /* Tooltip Arrow (Left Arrow) */
+            .bar .tooltiptext::after {
+                content: "";
+                position: absolute;
+                top: 50%;
+                right: 100%; /* To the left of the tooltip */
+                margin-top: -5px;
+                border-width: 5px;
+                border-style: solid;
+                border-color: transparent black transparent transparent;
+            }
+
+            /* Axis Labels */
             .axis-label {
                 font-size: 11px;
                 color: #555;
                 margin-top: 5px;
                 text-align: center;
-                display: none; /* Hidden by default */
+                display: none;
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
@@ -264,26 +309,6 @@
             .show-labels .axis-label {
                 display: block;
             }
-
-            /* Tooltip */
-            #tooltip {
-                position: relative; /* Fixed relative to viewport */
-                background: rgba(30, 30, 30, 0.95);
-                color: white;
-                padding: 8px 12px;
-                border-radius: 4px;
-                font-size: 12px;
-                pointer-events: none; /* Crucial: allows mouse to pass through to chart */
-                opacity: 0;
-                transition: opacity 0.1s; /* Faster transition for responsiveness */
-                z-index: 9999;
-                white-space: nowrap;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-                line-height: 1.4;
-                transform: translate(15px, 15px); /* Default offset via CSS */
-            }
-
-            /* Messages */
             .message {
                 position: absolute;
                 top: 50%;
@@ -386,45 +411,27 @@
             data.forEach(item => {
                 const val = parseFloat(item.value);
                 const heightPct = (val / maxValue) * 100;
+                const measure = this._props.measureName;
 
                 const wrapper = document.createElement("div");
                 wrapper.className = "bar-wrapper";
 
+                // We inject the Tooltip Span DIRECTLY inside the .bar div
+                // This allows the CSS :hover selector to work naturally
                 wrapper.innerHTML = `
-                    <div class="bar" style="height: ${heightPct}%"></div>
+                    <div class="bar" style="height: ${heightPct}%">
+                        <span class="tooltiptext">
+                            <strong style="font-size:1.1em; color:#eee">${measure}</strong><br>
+                            ${item.year} - ${item.period}<br>
+                            <strong style="font-size:1.1em">${val.toLocaleString()} ${item.currency}</strong>
+                        </span>
+                    </div>
                     <div class="axis-label">${item.period}<br>${item.year}</div>
                 `;
-
-                // Append wrapper to DOM first so we can querySelector the bar
+                
                 chartBody.appendChild(wrapper);
-
-                // --- CHANGED LOGIC START ---
-                // We now attach the event listeners specifically to the .bar element
-                // inside the wrapper, rather than the wrapper itself.
-                const barElement = wrapper.querySelector('.bar');
-
-                barElement.addEventListener("mouseenter", () => {
-                    const measure = this._props.measureName;
-                    
-                    tooltip.innerHTML = `
-                        <strong style="color:#eee; font-size:1.1em">${measure}</strong><br/>
-                        <span style="color:#ccc">${item.year} - ${item.period}</span><br/>
-                        <strong style="font-size:1.1em">${val.toLocaleString()} ${item.currency}</strong>
-                    `;
-                    tooltip.style.opacity = "1";
-                });
-
-                barElement.addEventListener("mousemove", (e) => {
-                    const x = e.clientX;
-                    const y = e.clientY - 45; // Slightly above cursor
-                    tooltip.style.left = `${x}px`;
-                    tooltip.style.top = `${y}px`;
-                });
-
-                barElement.addEventListener("mouseleave", () => {
-                    tooltip.style.opacity = "0";
-                });
-                // --- CHANGED LOGIC END ---
+                
+                // No JavaScript Event Listeners needed for Tooltip anymore!
             });
         }
 
