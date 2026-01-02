@@ -210,7 +210,7 @@
                 padding: 10px;
                 box-sizing: border-box;
                 position: relative; /* Anchor for absolute tooltip */
-                overflow: visible;   /* Keeps content inside */
+                overflow: visible;   /* Allows tooltip to appear outside container */
             }
 
             /* Bars Area */
