@@ -210,7 +210,6 @@
                 padding: 10px;
                 box-sizing: border-box;
                 position: relative; /* Anchor for absolute tooltip */
-                overflow: visible;   /* Allows tooltip to appear outside container */
             }
 
             /* Bars Area */
@@ -263,10 +262,10 @@
                 padding: 8px;
                 font-size: 11px;
                 line-height: 1.4;
-                overflow: visible;   /* Allows tooltip to appear outside container */
 
                 /* Position the tooltip text (Right Side) */
                 position: absolute;
+                z-index: 9999;
                 top: 50%;
                 left: 105%; /* Position to the right of the bar */
                 transform: translateY(-50%); /* Center vertically */
@@ -323,7 +322,6 @@
         
         <div class="container" id="container">
             <div class="chart-body" id="chartBody"></div>
-            <div id="tooltip"></div>
         </div>
     `;
 
