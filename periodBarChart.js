@@ -251,8 +251,8 @@
             #tooltip {
                 position: absolute; /* Relative to .container */
                 top: 0; left: 0;
-                background-color: rgba(0, 0, 0, 0.9);
-                color: #fff;
+                background-color: rgba(249, 246, 246, 0.91);
+                color: #000000ff;
                 padding: 8px 12px;
                 border-radius: 4px;
                 font-size: 11px;
