@@ -398,8 +398,8 @@
 
                 barElement.addEventListener("mouseenter", () => {
                     tooltip.innerHTML = `
-                        <strong style="font-size:1.1em; color:#eee">${measure}</strong><br>
-                        ${item.year} - ${item.period}<br>
+                        <strong style="font-size:1.1em">${measure}</strong><br>
+                        ${item.period} - ${item.year}<br>
                         <strong style="font-size:1.1em">${val.toLocaleString()} ${item.currency}</strong>
                     `;
                     
